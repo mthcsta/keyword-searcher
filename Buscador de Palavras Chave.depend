@@ -1,0 +1,21 @@
+# depslib dependency file v1.0
+1618193850 source:c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tokenizer.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<locale.h>
+
+1618277661 source:c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<locale.h>
+	"TAD/avl.h"
+
+1618277720 c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tad\avl.h
+
+1618277782 source:c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tad\avl.c
+	<stdio.h>
+	<stdlib.h>
+	"avl.h"
+

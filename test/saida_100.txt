@@ -1,0 +1,18 @@
+consulta: solteiro Palavra encontrada nos tweets 99, 
+consulta: voce Palavra encontrada nos tweets 8, 13, 50, 95, 99, 
+consulta: liberdade Palavra encontrada nos tweets 99, 
+consulta: jeito Palavra encontrada nos tweets 88, 
+consulta: oscar Palavra encontrada nos tweets 86, 
+consulta: nocao Palavra encontrada nos tweets 84, 
+consulta: de Palavra encontrada nos tweets 6, 18, 20, 29, 32, 35, 41, 44, 48, 55, 56, 57, 58, 62, 63, 64, 65, 71, 83, 88, 90, 99, 
+consulta: bateria Palavra não encontrada
+consulta: nada Palavra encontrada nos tweets 20, 48, 52, 64, 
+
+********** Estatísticas da Indexação ***********
+nodos = 704
+comparações = 39609
+rotações = 330
+altura da árvore = 11
+
+********** Estatísticas das Consultas ***********
+comparações = 164
