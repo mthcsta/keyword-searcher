@@ -35,6 +35,13 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="TAD/avl.h" />
+		<Unit filename="TAD/palavra.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="TAD/word.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="TAD/word.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>

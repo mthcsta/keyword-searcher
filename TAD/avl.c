@@ -1,11 +1,26 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "avl.h"
+#include "word.h"
+#include <unistd.h>
 
-AVL_T* Init() {
+
+AVL_T* avl_init() {
     return NULL;
 }
-AVL_T* rotateleft(AVL_T *p) {
+Word_T* avl_search(AVL_T *tree, char x[]) {
+//  printf("[%s | %s]", x, tree->data->content);
+  if (!tree) {
+    return NULL;
+  } else if (strcmp(x, tree->data->content) == 0) {
+    return (tree->data);
+  } else if (strcmp(x, tree->data->content) == -1) {
+    return avl_search(tree->left, x);
+  }
+  return avl_search(tree->right, x);
+}
+
+AVL_T* avl_rotateleft(AVL_T *p) {
   AVL_T *z;
 
   z = p->right;
@@ -16,7 +31,7 @@ AVL_T* rotateleft(AVL_T *p) {
   return p;
 }
 
-AVL_T* doublerotateleft(AVL_T *p) {
+AVL_T* avl_doublerotateleft(AVL_T *p) {
   AVL_T *z, *y;
 
   z = p->right;
@@ -31,7 +46,7 @@ AVL_T* doublerotateleft(AVL_T *p) {
   return p;
 }
 
-AVL_T* rotateright(AVL_T *p) {
+AVL_T* avl_rotateright(AVL_T *p) {
   AVL_T *u;
 
   u = p->left;
@@ -42,7 +57,7 @@ AVL_T* rotateright(AVL_T *p) {
   return p;
 }
 
-AVL_T* doublerotateright(AVL_T* p) {
+AVL_T* avl_doublerotateright(AVL_T* p) {
   AVL_T *u, *v;
 
   u = p->left;
@@ -57,81 +72,92 @@ AVL_T* doublerotateright(AVL_T* p) {
   return p;
 }
 
-int insert(AVL_T **tree, char x[], int *ok) {
+void avl_insert(AVL_T **tree, char x[], int *ok, Word_T **Word) {
   /* Insere nodo em uma árvore AVL, onde A representa a raiz da árvore,
   x, a chave a ser inserida e h a altura da árvore */
   AVL_T *treeAux = *tree;
   if (!treeAux) {
     treeAux = (AVL_T*) malloc(sizeof(AVL_T));
-    strcpy(treeAux->data, x);
+    treeAux->data = word_init();
+    word_set(&(treeAux->data), x);
     treeAux->left = NULL;
     treeAux->right = NULL;
     treeAux->BF = 0;
     *ok = 1;
-  } else if (strcmp(x, treeAux->data) == -1) {
-    insert(&(treeAux->left), x, ok);
+    *Word = treeAux->data;
+    //return treeAux->data;
+  } else if (strcmp(x, treeAux->data->content) == -1) {
+    avl_insert(&(treeAux->left), x, ok, Word);
     if (*ok) {
       switch (treeAux->BF) {
         case -1: treeAux->BF = 0; *ok = 0; break;
         case 0: treeAux->BF = 1; break;
-        case 1: treeAux = Caso1(treeAux, ok); break;
+        case 1: treeAux = avl_Caso1(treeAux, ok); break;
       }
     }
+  } else if(strcmp(x, treeAux->data) == 0) {
+    *Word = treeAux->data;
+    return;
   } else {
-    insert(&(treeAux->right), x, ok);
+    avl_insert(&(treeAux->right), x, ok, Word);
     if (*ok) {
       switch (treeAux->BF) {
         case 1: treeAux->BF = 0; *ok = 0; break;
         case 0: treeAux->BF = -1; break;
-        case -1: treeAux = Caso2(treeAux, ok); break;
+        case -1: treeAux = avl_Caso2(treeAux, ok); break;
       }
     }
   }
   *tree = treeAux;
-  return 0;
 }
 
-AVL_T* Caso1(AVL_T *a , int *ok) {
+AVL_T* avl_Caso1(AVL_T *a , int *ok) {
   AVL_T *z;
   z = a->left;
-  a = (z->BF == 1) ? rotateright(a) : doublerotateright(a);
+  a = (z->BF == 1) ? avl_rotateright(a) : avl_doublerotateright(a);
   a->BF = 0;
   *ok = 0;
   return a;
 }
 
-AVL_T* Caso2(AVL_T *a , int *ok) {
+AVL_T* avl_Caso2(AVL_T *a , int *ok) {
   AVL_T *z;
   z = a->right;
-  a = (z->BF == -1) ? rotateleft(a) : doublerotateleft(a);
+  a = (z->BF == -1) ? avl_rotateleft(a) : avl_doublerotateleft(a);
   a->BF = 0;
   *ok = 0;
   return a;
 }
 
-void print(AVL_T *tree) {
+void avl_print(AVL_T *tree) {
   if (!tree) {
     return;
   }
-  printf("%s\n", tree->data);
-  print(tree->left);
-  print(tree->right);
+  printf("%s\n", tree->data->content);
+  avl_print(tree->left);
+  avl_print(tree->right);
   return;
 }
-void printwithlevelTR(AVL_T *tree, int level) {
+void avl_printwithlevelTR(AVL_T *tree, int level) {
   int i;
+  Mention_T* mentions;
   if (!tree) {
     return;
   }
   for(i = level; i > 0; i--) {
     printf("=");
   }
-  printf("%s\n", tree->data);
-  printwithlevelTR(tree->left, level+1);
-  printwithlevelTR(tree->right, level+1);
+  printf("%s [", tree->data->content);
+  for (mentions = tree->data->mentions; mentions != NULL; mentions = mentions->next) {
+    printf(" %d ", mentions->id);
+  }
+  printf(" ]\n");
+  usleep(30000);
+  avl_printwithlevelTR(tree->left, level+1);
+  avl_printwithlevelTR(tree->right, level+1);
 }
-void printwithlevel(AVL_T *tree) {
-  printwithlevelTR(tree, 1);
+void avl_printwithlevel(AVL_T *tree) {
+  avl_printwithlevelTR(tree, 1);
 }
 
 
