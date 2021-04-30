@@ -1,23 +1,31 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include "avl.h"
 #include "word.h"
-#include <unistd.h>
+#include "../helpers.h"
 
 
 AVL_T* avl_init() {
     return NULL;
 }
-Word_T* avl_search(AVL_T *tree, char x[]) {
-//  printf("[%s | %s]", x, tree->data->content);
-  if (!tree) {
-    return NULL;
-  } else if (strcmp(x, tree->data->content) == 0) {
-    return (tree->data);
-  } else if (strcmp(x, tree->data->content) == -1) {
-    return avl_search(tree->left, x);
+
+Word_T* avl_search(AVL_T *tree, char x[], int *stats_comparations) {
+  int cmp;
+  AVL_T *node = tree;
+  while (node) {
+    (*stats_comparations)++;
+    cmp = strcmp(x, node->data->content);
+    if (cmp == 0) {
+      return node->data;
+    }
+    if (cmp == -1) {
+      node = node->left;
+    } else {
+      node = node->right;
+    }
   }
-  return avl_search(tree->right, x);
+  return NULL;
 }
 
 AVL_T* avl_rotateleft(AVL_T *p) {
@@ -71,10 +79,11 @@ AVL_T* avl_doublerotateright(AVL_T* p) {
   p = v;
   return p;
 }
-
-void avl_insert(AVL_T **tree, char x[], int *ok, Word_T **Word) {
-  /* Insere nodo em uma árvore AVL, onde A representa a raiz da árvore,
-  x, a chave a ser inserida e h a altura da árvore */
+void avl_insert(AVL_T **tree, char x[], Word_T **Word, int *stats_nodes, unsigned long int *stats_comparations, int *stats_rotations) {
+  int ok = 0;
+  avl_insertTR(tree, x, &ok, Word, stats_nodes, stats_comparations, stats_rotations);
+}
+void avl_insertTR(AVL_T **tree, char x[], int *ok, Word_T **Word, int *stats_nodes, unsigned long int *stats_comparations, int *stats_rotations) {
   AVL_T *treeAux = *tree;
   if (!treeAux) {
     treeAux = (AVL_T*) malloc(sizeof(AVL_T));
@@ -85,33 +94,37 @@ void avl_insert(AVL_T **tree, char x[], int *ok, Word_T **Word) {
     treeAux->BF = 0;
     *ok = 1;
     *Word = treeAux->data;
+    (*stats_nodes)++;
     //return treeAux->data;
   } else if (strcmp(x, treeAux->data->content) == -1) {
-    avl_insert(&(treeAux->left), x, ok, Word);
+    (*stats_comparations)++;
+    avl_insertTR(&(treeAux->left), x, ok, Word, stats_nodes, stats_comparations, stats_rotations);
     if (*ok) {
       switch (treeAux->BF) {
         case -1: treeAux->BF = 0; *ok = 0; break;
         case 0: treeAux->BF = 1; break;
-        case 1: treeAux = avl_Caso1(treeAux, ok); break;
+        case 1: treeAux = avl_rightrotation(treeAux, ok); (*stats_rotations)++; break;
       }
     }
   } else if(strcmp(x, treeAux->data) == 0) {
+    (*stats_comparations)++;
     *Word = treeAux->data;
     return;
   } else {
-    avl_insert(&(treeAux->right), x, ok, Word);
+    (*stats_comparations)++;
+    avl_insertTR(&(treeAux->right), x, ok, Word, stats_nodes, stats_comparations, stats_rotations);
     if (*ok) {
       switch (treeAux->BF) {
         case 1: treeAux->BF = 0; *ok = 0; break;
         case 0: treeAux->BF = -1; break;
-        case -1: treeAux = avl_Caso2(treeAux, ok); break;
+        case -1: treeAux = avl_leftrotation(treeAux, ok); (*stats_rotations)++; break;
       }
     }
   }
   *tree = treeAux;
 }
 
-AVL_T* avl_Caso1(AVL_T *a , int *ok) {
+AVL_T* avl_rightrotation(AVL_T *a , int *ok) {
   AVL_T *z;
   z = a->left;
   a = (z->BF == 1) ? avl_rotateright(a) : avl_doublerotateright(a);
@@ -120,7 +133,7 @@ AVL_T* avl_Caso1(AVL_T *a , int *ok) {
   return a;
 }
 
-AVL_T* avl_Caso2(AVL_T *a , int *ok) {
+AVL_T* avl_leftrotation(AVL_T *a , int *ok) {
   AVL_T *z;
   z = a->right;
   a = (z->BF == -1) ? avl_rotateleft(a) : avl_doublerotateleft(a);
@@ -129,100 +142,56 @@ AVL_T* avl_Caso2(AVL_T *a , int *ok) {
   return a;
 }
 
-void avl_print(AVL_T *tree) {
+// return tree AVL height
+int avl_height(AVL_T *tree) {
   if (!tree) {
-    return;
+    return 0;
   }
-  printf("%s\n", tree->data->content);
-  avl_print(tree->left);
-  avl_print(tree->right);
-  return;
-}
-void avl_printwithlevelTR(AVL_T *tree, int level) {
-  int i;
-  Mention_T* mentions;
-  if (!tree) {
-    return;
-  }
-  for(i = level; i > 0; i--) {
-    printf("=");
-  }
-  printf("%s [", tree->data->content);
-  for (mentions = tree->data->mentions; mentions != NULL; mentions = mentions->next) {
-    printf(" %d ", mentions->id);
-  }
-  printf(" ]\n");
-  usleep(30000);
-  avl_printwithlevelTR(tree->left, level+1);
-  avl_printwithlevelTR(tree->right, level+1);
-}
-void avl_printwithlevel(AVL_T *tree) {
-  avl_printwithlevelTR(tree, 1);
+  return 1 + max(avl_height(tree->left), avl_height(tree->right));
 }
 
+int avl_query(FILE *input, FILE *search, FILE *output) {
+  AVL_T *tree = avl_init();
+  int stats_nodes = 0, stats_rotations = 0, stats_comparations2 = 0;
+  char *word, line[300], *id; // linhas a serem lidas do arquivo
+  char sepparator[]= {" 0123456789,.&*%\?!;/-'@\"$#=~><()][}{:\n\t_"}; //caracteres separadores para as palavras
+  int id_number;
+  Mention_T *Mentions;
+  Word_T *Word;
+  unsigned long int stats_comparations = 0;
 
-/*
-pNode* consultaABP2(pNodoA *a, int chave) {
-    if (a==NULL) {
-        return NULL;
-    }
-    if (a->info == chave) {
-        return a;
-    }
-    if (a->info > chave) {
-        return consultaABP2(a->esq,chave);
-    }
-    return consultaABP2(a->dir,chave);
-}
+  // each line of input file
+  while (fgets(line,1000,input)) {
+    id = strtok(line, ";"); // get tweet id
+    id_number = atoi(id); // converts id in string to int
 
-void InsereArvore(pNodoA **a, int ch) {
-    pNodoA *novo = *a;
-    if (*a == NULL) {
-        novo = (pNodoA*) malloc(sizeof(pNodoA));
-        novo->info = ch;
-        novo->esq = NULL;
-        novo->dir = NULL;
+    word = strtok(NULL, sepparator); // get tweet first word
+
+    // while find words on tweet...
+    while (word != NULL) {
+      wordtolowercase(word); // convert word to lowercase
+      avl_insert(&tree, word, &Word, &stats_nodes, &stats_comparations, &stats_rotations);
+      word_add_mention(&Word, id_number);
+      word = strtok(NULL, sepparator); // tweet get the next word of tweet
+    }
+  }
+  while (fgets(line,1000,search)) {
+    word = strtok(line, sepparator);
+    fprintf(output,"consulta: %s Palavra ", word);
+    if (Word = avl_search(tree, word, &stats_comparations2)) {
+      fprintf(output, "encontrada nos tweets");
+      for (Mentions = mention_invert(Word->mentions); Mentions; Mentions = Mentions->next) {
+        fprintf(output, " %d,", Mentions->id);
+      }
     } else {
-        if (ch < (*a)->info) {
-            InsereArvore(&((*a)->esq),ch);
-        } else {
-            InsereArvore(&((*a)->dir),ch);
-        }
+      fprintf(output, "não encontrada");
     }
-    *a = novo;
-}
+    fprintf(output, "\n");
+  }
+  fprintf(output, "\n********** Estatísticas da Indexação **************\n");
+  fprintf(output, "nodos = %d\ncomparações = %lu\nrotações = %d\naltura da árvore = %d", stats_nodes, stats_comparations, stats_rotations, avl_height(tree));
+  fprintf(output, "\n********** Estatísticas das Consultas **************\n");
+  fprintf(output, "comparações = %d", stats_comparations2);
 
-void ImprimirPreFixadoAEsquerda(pNodoA *a) {
-    if (a == NULL) {
-        return;
-    }
-    printf("(%d)  ", a->info);
-    ImprimirPreFixadoAEsquerda(a->esq);
-    ImprimirPreFixadoAEsquerda(a->dir);
+  return EXIT_SUCCESS;
 }
-
-int ContarNodos(pNodoA *a) {
-    if (a == NULL) {
-        return 0;
-    }
-    return 1 + ContarNodos(a->esq) + ContarNodos(a->dir);
-}
-
-void ImprimirPreFixadoAEsquerdaComNivel(pNodoA *a) {
-    return AuxImprimirPreFixadoAEsquerdaComNivel(a, 1);
-}
-// função auxiliar para não precisar passar o nivel quando chamar a função
-void AuxImprimirPreFixadoAEsquerdaComNivel(pNodoA *a, int nivel) {
-    int i;
-    if (a == NULL) {
-        return;
-    }
-    for(i = 0; i < nivel; i++) {
-        printf("=");
-    }
-    printf("%d\n", a->info);
-    AuxImprimirPreFixadoAEsquerdaComNivel(a->esq, nivel+1);
-    AuxImprimirPreFixadoAEsquerdaComNivel(a->dir, nivel+1);
-}
-
-*/

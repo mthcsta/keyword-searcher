@@ -1,34 +1,48 @@
 # depslib dependency file v1.0
-1619724440 source:c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tokenizer.c
+1619756774 source:c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tokenizer.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	<locale.h>
 
-1619737914 source:c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\main.c
+1619759114 source:c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	<locale.h>
 	"TAD/avl.h"
 	"TAD/word.h"
+	"helpers.h"
 
-1619738259 c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tad\avl.h
+1619757470 c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tad\avl.h
 	"word.h"
 
-1619738274 source:c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tad\avl.c
+1619759191 source:c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tad\avl.c
 	<stdio.h>
 	<stdlib.h>
+	<unistd.h>
 	"avl.h"
 	"word.h"
-	<unistd.h>
+	"../helpers.h"
 
 1618722759 source:c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tad\palavra.c
 
-1619732432 source:c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tad\word.c
+1619745232 source:c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tad\word.c
 	<stdio.h>
 	<stdlib.h>
 	"word.h"
 
 1619731852 c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tad\word.h
+
+1619759145 source:c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\helpers.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<locale.h>
+
+1619756727 c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\helpers.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<locale.h>
 

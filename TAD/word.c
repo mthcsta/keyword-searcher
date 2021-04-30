@@ -21,9 +21,13 @@ void mention_insert(Mention_T **mentionList, int currentId) {
     new_mention->next = *mentionList;
     *mentionList = new_mention;
 }
-
-
-
+Mention_T* mention_invert(Mention_T *mentionList) {
+  Mention_T *new_list = NULL, *ptList;
+  for (ptList = mentionList; ptList; ptList = ptList->next) {
+    mention_insert(&new_list, ptList->id);
+  }
+  return new_list;
+}
 void word_add_mention(Word_T **word, int id) {
   Word_T *wordinha = *word;
   if (wordinha->mentions == NULL || wordinha->mentions->id != id) {
