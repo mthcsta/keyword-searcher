@@ -9,7 +9,7 @@ Pela linha de comando:
 O programa recebe 4 entradas:  
 `<arquivo de entrada>`: recebe o caminho para um arquivo CSV.  
 `<arquivo de consulta>`: recebe o caminho para um arquivo de texto com palavras escritas linha a linha.  
-`<arquivo de saída>`: recebe um nome de arquivo para criar e escrever.
+`<arquivo de saída>`: recebe um nome de arquivo para criar e escrever.  
 `<arvore ou comparação>`: recebe o nome de uma árvore(AVL/BST) ou CMP(para comparação entre as duas).   
 
 ## Forma de comparação
