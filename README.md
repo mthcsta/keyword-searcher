@@ -23,10 +23,15 @@ Por fim, é dado estatísticas da árvore como quantidade de nodos criados, comp
 
 ## Estruturas
 Para a implementação do projeto foram precisas 5 estruturas
-**WORD**: contém uma string com a palavra e um ponteiro para a estrutura MENTION, uma LSE(Lista Simplesmente Encadeada) com as menções a palavra.
-**MENTION**: contem um INT que guarda um id de tweet e um ponteiro para outro MENTION
-**AVL**: árvore AVL com a parte do dado sendo do tipo WORD
-**BST**: árvore BST(ou ABP) com a parte do dado sendo do tipo WORD
+
+**WORD**: contém uma string com a palavra e um ponteiro para a estrutura MENTION, uma LSE(Lista Simplesmente Encadeada) com as menções a palavra.  
+
+**MENTION**: contem um INT que guarda um id de tweet e um ponteiro para outro MENTION  
+
+**AVL**: árvore AVL com a parte do dado sendo do tipo WORD  
+
+**BST**: árvore BST(ou ABP) com a parte do dado sendo do tipo WORD  
+
 **STATISTICS**: contem as estatísticas usadas para a comparação
 
 ## Implementação
