@@ -1,19 +1,15 @@
-#ifndef WORDT
-#define WORDT 1
+#ifndef _WORD_H_
+#define _WORD_H_
+#include "mention.h"
 #define MAX_SIZE 100
-typedef struct Mention {
-  int id;
-  struct Mention *next;
-} Mention_T;
 
-typedef struct Word {
+typedef struct WORD {
   char content[MAX_SIZE];
-  Mention_T *mentions;
-} Word_T;
+  MENTION_T *mentions;
+} WORD_T;
 
-Word_T* word_init();
-void mention_insert(Mention_T **mentionList, int currentId);
+WORD_T* word_init();
+void word_insert(WORD_T **Word, char word[]);
+void word_add_mention(WORD_T **word, int id);
 
-
-void word_add_mention(Word_T** word, int id);
 #endif

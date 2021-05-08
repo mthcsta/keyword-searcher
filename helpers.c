@@ -2,80 +2,169 @@
 #include <stdlib.h>
 #include <string.h>
 #include <locale.h>
+#include <ctype.h>
+#include <time.h>
+#include "TAD/avl.h"
+#include "TAD/bst.h"
 
+// coloca caracteres em minusculo
 void wordtolowercase(char *s) {
   int i;
-  for (i=strlen(s); i>=0; i--) {
-    s[i]=tolower(s[i]);
+  for (i=strlen(s)-1; i>=0; i--) {
+    s[i] = tolower(s[i]);
   }
 }
-
-int tokenizer(char *inputfile_name, char *outputfile_name) {
-  setlocale(LC_ALL,""); //para imprimir corretamente na tela os caracteres acentuados
-  FILE * input;
-  FILE * output;
-
-  char *word, line[300], *id; // linhas a serem lidas do arquivo
-  char sepparator[]= {" 0123456789,.&*%\?!;/-'@\"$#=~><()][}{:\n\t_"}; //caracteres separadores para as palavras
-  int id_number;
-
-  // test if input file exists
-  if (!(input=fopen(inputfile_name,"r"))) {
-    printf("error on trying to open file %s \n",inputfile_name);
-    return 1;
-  }
-  // test create output file
-  if (!(output=fopen(outputfile_name,"w"))) {
-    printf("error on trying to create file %s \n",outputfile_name);
-    return 1;
-  }
-
-  // each line of input file
-  while (fgets(line,1000,input)) {
-    id = strtok(line, ";"); // get tweet id
-    id_number = atoi(id); // converts id in string to int
-    fprintf(output,"%d;%", id_number);
-
-    word = strtok(NULL, sepparator); // get tweet first word
-
-    // while find words on tweet...
-    while (word != NULL) {
-      wordtolowercase(word); // convert word to lowercase
-      fprintf(output," %s", word); // put the word in output file
-      word = strtok(NULL, sepparator); // tweet get the next word of tweet
-    }
-    fprintf(output,"\n%");
-  }
-  // close files input and output
-  fclose(input);
-  fclose(output);
-  return 0;
-}
-
+// retorna o maior entre a e b
 int max(int a, int b) {
   return (a > b) ? a : b;
 }
-
-int loadfiles(int argc, char *argv[], FILE **input, FILE **search, FILE **output) {
-  if (argc!=4) {
-    printf ("Número incorreto de parâmetros.\n Para chamar o programa digite: %s <arq_entrada> <arq_consulta> <arq_saida>\n",argv[0]);
-    return 4;
+// abre arquivo dado pelo nome e o modo
+int loadfile(FILE **file, char *filename, char *mode) {
+  if (!(*file = fopen(filename, mode))) {
+    switch(mode[0]) {
+      case 'r':
+        printf("erro ao tentar abrir o arquivo %s \n",filename);
+      break;
+      case 'w':
+        printf("erro ao tentar criar o arquivo %s \n",filename);
+      break;
+    }
+    return EXIT_FAILURE;
   }
-  // test if input file exists
-  if (!(*input=fopen(argv[1],"r"))) {
-    printf("error on trying to open file %s \n",argv[1]);
-    return 3;
-  }
-  // test if search file exists
-  if (!(*search=fopen(argv[2],"r"))) {
-    printf("error on trying to open file %s \n",argv[2]);
-    return 2;
-  }
-  // test create output file
-  if (!(*output=fopen(argv[3],"w"))) {
-    printf("error on trying to create file %s \n",argv[3]);
+  return EXIT_SUCCESS;
+}
+// vai para a proxima palavra do token
+int nextword(char **word, char *text) {
+  char sepparator[] = {" 0123456789,.&*%\?!;/-'@\"$#=~><()][}{:\n\t_"};
+  *word = strtok(text, sepparator);
+  if ((*word) != NULL) {
+    wordtolowercase(*word);
     return 1;
   }
-
   return 0;
+}
+// guarda no vetor line uma linha do arquivo de entrada de tweets
+int lineofwords(char line[], int size, FILE *input, int *id_number) {
+  char *id;
+  if (!fgets(line, size, input)) {
+    return 0;
+  }
+  id = strtok(line, ";");
+  *id_number = atoi(id);
+  return 1;
+}
+// guarda no vetor line uma palavra do arquivo de consulta
+int wordtoquery(char line[], int size, FILE *query, char **word) {
+  if (!fgets(line, size, query)) {
+    return 0;
+  }
+  if ((strlen(line) == 1 && line[0] == '\n') || !nextword(word, line)) {
+    return wordtoquery(line, size, query, word);
+  }
+  return 1;
+}
+
+// recebe 3 arquivos, um para leitura de tweets, um para consultar palavras e outro para saída das palavras
+// consultadas e em quais tweets elas foram encontradas.
+// retorna uma struct com as estatisticas da indexação e consulta
+STATISTICS_T indexandqueryAVL(FILE *input, FILE *query, FILE *output) {
+  int id_number; // id do tweet
+  char *word, line[LINE_SIZE]; // linha a serem lidas do arquivo e palavra para token
+  AVL_T *tree = avl_init(); // guarda ponteiro para arvore
+  WORD_T *Word; // guarda ponteiro para palavra na arvore
+  MENTION_T *Mentions; // guarda ponteiro para menções da palavra na arvore
+  STATISTICS_T stats = {0, 0, 0, 0, 0, 0}; // inicia estatisticas com os valores em 0
+  clock_t clock_start = 0, clock_elapsed = 0; // usados para o tempo decorrido nas estatisticas
+
+  // INDEXAÇÃO
+  while (lineofwords(line, LINE_SIZE, input, &id_number)) {
+    while (nextword(&word, NULL)) {
+      clock_start = clock();
+      avl_insert(&tree, word, &Word, &stats);
+      word_add_mention(&Word, id_number);
+      clock_elapsed += clock_diff(clock_start); // acumula tempo decorrido
+    }
+  }
+  stats.elapsed_index = clock_elapsed; // grava tempo decorrido para indexação
+
+  // CONSULTA
+  clock_elapsed = 0;
+  while (wordtoquery(line, LINE_SIZE, query, &word)) {
+    clock_start = clock();
+    if ((Word = avl_search(tree, word, &stats.comparations_query))) {
+      fprintf(output,"consulta: %s Palavra encontrada nos tweets", word);
+      for (Mentions = mention_invert(Word->mentions); Mentions; Mentions = Mentions->next) {
+        fprintf(output, " %d,", Mentions->id);
+      }
+    } else {
+      fprintf(output, "consulta: %s Palavra não encontrada", word);
+    }
+    clock_elapsed += clock_diff(clock_start); // acumula tempo decorrido
+    fprintf(output, "\n");
+  }
+  stats.height = avl_height(tree);
+  stats.elapsed_query = clock_elapsed; // grava tempo decorrido para consulta
+
+  return stats;
+}
+
+// recebe 3 arquivos, um para leitura de tweets, um para consultar palavras e outro para saída das palavras
+// consultadas e em quais tweets elas foram encontradas.
+// retorna uma struct com as estatisticas da indexação e consulta
+STATISTICS_T indexandqueryBST(FILE *input, FILE *query, FILE *output) {
+  int id_number; // id do tweet
+  char *word, line[LINE_SIZE]; // linha a serem lidas do arquivo e palavra para token
+  BST_T *tree = bst_init(); // guarda ponteiro para arvore
+  WORD_T *Word; // guarda ponteiro para palavra na arvore
+  MENTION_T *Mentions; // guarda ponteiro para menções da palavra na arvore
+  STATISTICS_T stats = {0, 0, 0, 0, 0, 0}; // inicia estatisticas com os valores em 0
+  clock_t clock_start = 0, clock_elapsed = 0; // usados para o tempo decorrido nas estatisticas
+
+  // INDEXAÇÃO
+  while (lineofwords(line, LINE_SIZE, input, &id_number)) {
+    while (nextword(&word, NULL)) {
+      clock_start = clock();
+      bst_insert(&tree, word, &Word, &stats);
+      word_add_mention(&Word, id_number);
+      clock_elapsed += clock_diff(clock_start); // acumula tempo decorrido
+    }
+  }
+  stats.elapsed_index = clock_elapsed; // grava tempo decorrido para indexação
+
+  // CONSULTA
+  clock_elapsed = 0;
+  while (wordtoquery(line, LINE_SIZE, query, &word)) {
+    clock_start = clock();
+    if ((Word = bst_get(tree, word, &stats.comparations_query))) {
+      fprintf(output,"consulta: %s Palavra encontrada nos tweets", word);
+      for (Mentions = mention_invert(Word->mentions); Mentions; Mentions = Mentions->next) {
+        fprintf(output, " %d,", Mentions->id);
+      }
+    } else {
+      fprintf(output, "consulta: %s Palavra não encontrada", word);
+    }
+    clock_elapsed += clock_diff(clock_start); // acumula tempo decorrido
+    fprintf(output, "\n");
+  }
+  stats.height = bst_height(tree);
+  stats.elapsed_query = clock_elapsed; // grava tempo decorrido para consulta
+
+  return stats;
+}
+// coloca em um arquivo de escrita as estatisticas geradas por funções indexandquery
+void putstats(FILE *output, STATISTICS_T *stats) {
+  fprintf(output, "\n********** Estatísticas da Indexação **************\n");
+  fprintf(output, "nodos = %d\n", stats->nodes);
+  fprintf(output, "comparações = %lu\n", stats->comparations_index);
+  fprintf(output, "rotações = %d\n", stats->rotations);
+  fprintf(output, "altura da árvore = %d\n", stats->height);
+  fprintf(output, "tempo decorrido = %ld ms\n", stats->elapsed_index);
+
+  fprintf(output, "\n********** Estatísticas das Consultas **************\n");
+  fprintf(output, "comparações = %lu\n", stats->comparations_query);
+  fprintf(output, "tempo decorrido = %ld ms\n", stats->elapsed_query);
+}
+// calcula a diferença entre o clock atual e um clock salvo antes
+clock_t clock_diff(clock_t clock_start) {
+  return ((clock() - clock_start) * 1000) / CLOCKS_PER_SEC;
 }

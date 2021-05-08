@@ -5,19 +5,18 @@
 	<string.h>
 	<locale.h>
 
-1619759114 source:c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\main.c
+1620500666 source:c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	<locale.h>
-	"TAD/avl.h"
-	"TAD/word.h"
 	"helpers.h"
 
-1619757470 c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tad\avl.h
+1620403389 c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tad\avl.h
 	"word.h"
+	"../helpers.h"
 
-1619759191 source:c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tad\avl.c
+1620504788 source:c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tad\avl.c
 	<stdio.h>
 	<stdlib.h>
 	<unistd.h>
@@ -27,22 +26,63 @@
 
 1618722759 source:c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tad\palavra.c
 
-1619745232 source:c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tad\word.c
-	<stdio.h>
+1620012938 source:c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tad\word.c
 	<stdlib.h>
+	<string.h>
 	"word.h"
+	"mention.h"
 
-1619731852 c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tad\word.h
+1620012580 c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tad\word.h
+	"mention.h"
 
-1619759145 source:c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\helpers.c
+1620506897 source:c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\helpers.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	<locale.h>
+	<ctype.h>
+	<time.h>
+	"TAD/avl.h"
+	"TAD/bst.h"
 
-1619756727 c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\helpers.h
+1620505966 c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\helpers.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	<locale.h>
+	<time.h>
+
+1620013287 c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tad\abp.h
+	"word.h"
+	"../helpers.h"
+
+1620242728 source:c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tad\abp.c
+	<string.h>
+	"word.h"
+	"../helpers.h"
+	"bst.h"
+
+1620507064 c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tad\mention.h
+	<stdio.h>
+
+1620507024 source:c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tad\mention.c
+	<stdlib.h>
+	"mention.h"
+
+1620016526 c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tad\rb.h
+
+1620055367 source:c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tad\rb.c
+	<stdio.h>
+	<stdlib.h>
+	"rb.h"
+
+1620403579 c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tad\bst.h
+	"word.h"
+	"../helpers.h"
+
+1620503997 source:c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tad\bst.c
+	<string.h>
+	"word.h"
+	"../helpers.h"
+	"bst.h"
 

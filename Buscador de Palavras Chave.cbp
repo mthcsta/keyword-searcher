@@ -35,9 +35,14 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="TAD/avl.h" />
-		<Unit filename="TAD/palavra.c">
+		<Unit filename="TAD/bst.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="TAD/bst.h" />
+		<Unit filename="TAD/mention.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="TAD/mention.h" />
 		<Unit filename="TAD/word.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -47,9 +52,6 @@
 		</Unit>
 		<Unit filename="helpers.h" />
 		<Unit filename="main.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="tokenizer.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Extensions>
