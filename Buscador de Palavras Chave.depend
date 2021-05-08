@@ -5,37 +5,37 @@
 	<string.h>
 	<locale.h>
 
-1620500666 source:c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\main.c
+1620507333 source:c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\main.c
 	<stdio.h>
 	<stdlib.h>
-	<string.h>
 	<locale.h>
 	"helpers.h"
 
-1620403389 c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tad\avl.h
+1620507530 c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tad\avl.h
+	<stdio.h>
+	<string.h>
 	"word.h"
 	"../helpers.h"
 
-1620504788 source:c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tad\avl.c
+1620507475 source:c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tad\avl.c
 	<stdio.h>
 	<stdlib.h>
-	<unistd.h>
 	"avl.h"
 	"word.h"
 	"../helpers.h"
 
 1618722759 source:c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tad\palavra.c
 
-1620012938 source:c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tad\word.c
+1620507348 source:c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tad\word.c
 	<stdlib.h>
 	<string.h>
 	"word.h"
 	"mention.h"
 
-1620012580 c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tad\word.h
+1620507375 c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tad\word.h
 	"mention.h"
 
-1620506897 source:c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\helpers.c
+1620512344 source:c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\helpers.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -45,7 +45,7 @@
 	"TAD/avl.h"
 	"TAD/bst.h"
 
-1620505966 c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\helpers.h
+1620507603 c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\helpers.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -76,11 +76,14 @@
 	<stdlib.h>
 	"rb.h"
 
-1620403579 c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tad\bst.h
+1620507519 c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tad\bst.h
+	<stdio.h>
+	<string.h>
 	"word.h"
 	"../helpers.h"
 
-1620503997 source:c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tad\bst.c
+1620507491 source:c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tad\bst.c
+	<stdio.h>
 	<string.h>
 	"word.h"
 	"../helpers.h"

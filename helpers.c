@@ -77,20 +77,19 @@ STATISTICS_T indexandqueryAVL(FILE *input, FILE *query, FILE *output) {
   clock_t clock_start = 0, clock_elapsed = 0; // usados para o tempo decorrido nas estatisticas
 
   // INDEXAÇÃO
+  clock_start = clock();
   while (lineofwords(line, LINE_SIZE, input, &id_number)) {
     while (nextword(&word, NULL)) {
-      clock_start = clock();
       avl_insert(&tree, word, &Word, &stats);
       word_add_mention(&Word, id_number);
-      clock_elapsed += clock_diff(clock_start); // acumula tempo decorrido
     }
   }
+  clock_elapsed = clock_diff(clock_start); // acumula tempo decorrido
   stats.elapsed_index = clock_elapsed; // grava tempo decorrido para indexação
 
   // CONSULTA
-  clock_elapsed = 0;
+  clock_start = clock();
   while (wordtoquery(line, LINE_SIZE, query, &word)) {
-    clock_start = clock();
     if ((Word = avl_search(tree, word, &stats.comparations_query))) {
       fprintf(output,"consulta: %s Palavra encontrada nos tweets", word);
       for (Mentions = mention_invert(Word->mentions); Mentions; Mentions = Mentions->next) {
@@ -99,9 +98,9 @@ STATISTICS_T indexandqueryAVL(FILE *input, FILE *query, FILE *output) {
     } else {
       fprintf(output, "consulta: %s Palavra não encontrada", word);
     }
-    clock_elapsed += clock_diff(clock_start); // acumula tempo decorrido
     fprintf(output, "\n");
   }
+  clock_elapsed = clock_diff(clock_start); // acumula tempo decorrido
   stats.height = avl_height(tree);
   stats.elapsed_query = clock_elapsed; // grava tempo decorrido para consulta
 
@@ -112,6 +111,7 @@ STATISTICS_T indexandqueryAVL(FILE *input, FILE *query, FILE *output) {
 // consultadas e em quais tweets elas foram encontradas.
 // retorna uma struct com as estatisticas da indexação e consulta
 STATISTICS_T indexandqueryBST(FILE *input, FILE *query, FILE *output) {
+  setlocale(LC_ALL, "Portuguese");
   int id_number; // id do tweet
   char *word, line[LINE_SIZE]; // linha a serem lidas do arquivo e palavra para token
   BST_T *tree = bst_init(); // guarda ponteiro para arvore
@@ -121,20 +121,19 @@ STATISTICS_T indexandqueryBST(FILE *input, FILE *query, FILE *output) {
   clock_t clock_start = 0, clock_elapsed = 0; // usados para o tempo decorrido nas estatisticas
 
   // INDEXAÇÃO
+  clock_start = clock();
   while (lineofwords(line, LINE_SIZE, input, &id_number)) {
     while (nextword(&word, NULL)) {
-      clock_start = clock();
       bst_insert(&tree, word, &Word, &stats);
       word_add_mention(&Word, id_number);
-      clock_elapsed += clock_diff(clock_start); // acumula tempo decorrido
     }
   }
+  clock_elapsed = clock_diff(clock_start); // acumula tempo decorrido
   stats.elapsed_index = clock_elapsed; // grava tempo decorrido para indexação
 
   // CONSULTA
-  clock_elapsed = 0;
+  clock_start = clock();
   while (wordtoquery(line, LINE_SIZE, query, &word)) {
-    clock_start = clock();
     if ((Word = bst_get(tree, word, &stats.comparations_query))) {
       fprintf(output,"consulta: %s Palavra encontrada nos tweets", word);
       for (Mentions = mention_invert(Word->mentions); Mentions; Mentions = Mentions->next) {
@@ -143,9 +142,9 @@ STATISTICS_T indexandqueryBST(FILE *input, FILE *query, FILE *output) {
     } else {
       fprintf(output, "consulta: %s Palavra não encontrada", word);
     }
-    clock_elapsed += clock_diff(clock_start); // acumula tempo decorrido
     fprintf(output, "\n");
   }
+  clock_elapsed = clock_diff(clock_start); // acumula tempo decorrido
   stats.height = bst_height(tree);
   stats.elapsed_query = clock_elapsed; // grava tempo decorrido para consulta
 

@@ -1,6 +1,9 @@
 # Keyword Searcher
 Este projeto foi feito com objetivo de fazer uma comparação entre árvores binárias de busca balanceada. As árvores escolhidas para o projeto foram BST (*Binary Search Tree*, em português, ABP ou *Árvore Binária de Pesquisa*)  e AVL (*Adelson Velsky e Landis*).
 
+## Executar programa
+clique no arquivo `executa-programa.bat` para uma forma mais fácil de testar o programa.
+
 ## Forma de comparação
 A comparação é dividida duas etapas:
 
