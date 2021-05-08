@@ -1,11 +1,19 @@
 # Keyword Searcher
 Este projeto foi feito com objetivo de fazer uma comparação entre árvores binárias de busca balanceada. As árvores escolhidas para o projeto foram BST (*Binary Search Tree*, em português, ABP ou *Árvore Binária de Pesquisa*)  e AVL (*Adelson Velsky e Landis*).
 
-## Executar programa
-clique no arquivo `executa-programa.bat` para uma forma mais fácil de testar o programa.
+## Executar
+Forma fácil: 
+clique no arquivo `executa-programa.bat`.    
+
+Pela linha de comando:
+O programa recebe 4 entradas:  
+`<arquivo de entrada>`: recebe o caminho para um arquivo CSV.  
+`<arquivo de consulta>`: recebe o caminho para um arquivo de texto com palavras escritas linha a linha.  
+`<arquivo de saída>`: recebe um nome de arquivo para criar e escrever.
+`<arvore ou comparação>`: recebe o nome de uma árvore(AVL/BST) ou CMP(para comparação entre as duas).   
 
 ## Forma de comparação
-A comparação é dividida duas etapas:
+A comparação é dividida três etapas:
 
 ### Indexação
 Nesta etapa o programa faz a leitura de um arquivo **CSV** (padrão separando os dados por ponto e vírgula), captura uma linha do arquivo e faz a inserção das palavras ainda não indexadas na árvore. 
@@ -15,30 +23,31 @@ Nesta etapa o programa faz a leitura de um arquivo de texto contendo uma palavra
 
 ### Saída
 Parte desta etapa é feita durante a etapa de consulta. Tem dois casos diferentes para cada palavra consultada:
-##### Caso a palavra for encontrada
-é informado no arquivo de saída os tweets em que a palavra foi mencionada.
-##### Caso a palavra não for encontrada
+**Caso a palavra for encontrada**:  
+é informado no arquivo de saída os tweets em que a palavra foi mencionada.  
+**Caso a palavra não for encontrada**:  
 é informado no arquivo de saída que a palavra não foi encontrada.
 Por fim, é dado estatísticas da árvore como quantidade de nodos criados, comparações feitas durante indexação e consulta, e as rotações feitas. 
 
 ## Estruturas
 Para a implementação do projeto foram precisas 5 estruturas
 
-**WORD**: contém uma string com a palavra e um ponteiro para a estrutura MENTION, uma LSE(Lista Simplesmente Encadeada) com as menções a palavra.  
+**WORD**: contém uma string com a palavra e um ponteiro para a estrutura MENTION, uma LSE(Lista Simplesmente Encadeada) com as menções a palavra.    
 
-**MENTION**: contem um INT que guarda um id de tweet e um ponteiro para outro MENTION  
+**MENTION**: contem um INT que guarda um id de tweet e um ponteiro para outro MENTION    
 
-**AVL**: árvore AVL com a parte do dado sendo do tipo WORD  
+**AVL**: árvore AVL com a parte do dado sendo do tipo WORD    
 
-**BST**: árvore BST(ou ABP) com a parte do dado sendo do tipo WORD  
+**BST**: árvore BST(ou ABP) com a parte do dado sendo do tipo WORD    
 
-**STATISTICS**: contem as estatísticas usadas para a comparação
+**STATISTICS**: contem as estatísticas usadas para a comparação    
 
 ## Implementação
 Todo o projeto tem variaveis e funções definidos em inglês para manter um padrão para o código todo. Para este projeto foi utilizada as árvores AVL e BST dadas em aula com modificações, tendo sido modificado cada nome de função para o inglês. A árvore AVL foi modificada para ter como entrada **WORD** e **STATISTICS** e retorno **WORD** em algumas funções, também foi necessário adicionar uma condição em caso a palavra já existir na árvore. A árvore BST teve as mesmas modificações que a AVL, com o diferencial de que também foi modificada a parte de busca/inserção, sendo feita uma função para ambas que percorre a árvore até encontrar ou um fim ou uma palavra. 
 
 ## Resultados
-Abaixo 3 tabelas com os resultados tirados das estatísticas geradas.
+Abaixo três tabelas com os resultados tirados das estatísticas geradas. A primeira tabela mostrando a indexação das duas árvores para cada base. A segunda e terceira mostrando para consulta de 10 e 1000 palavras respectivamente.
+
 
 | indexação | **AVL** (100) | **BST** (100) | **AVL** (10k) | **BST** (10k) | **AVL** (900k) | **BST** (900k) |  
 |----|-----|----|----|----|----|----|
