@@ -22,7 +22,7 @@ Nesta etapa o programa faz a leitura de um arquivo **CSV** (padrão separando os
 Nesta etapa o programa faz a leitura de um arquivo de texto contendo uma palavra por linha, captura a palavra e verifica se ela foi indexada na árvore criada anteriormente.
 
 ### Saída
-Parte desta etapa é feita durante a etapa de consulta. Tem dois casos diferentes para cada palavra consultada:
+Parte desta etapa é feita durante a etapa de consulta. Tem dois casos diferentes para cada palavra consultada:  
 **Caso a palavra for encontrada**:  
 é informado no arquivo de saída os tweets em que a palavra foi mencionada.  
 **Caso a palavra não for encontrada**:  
