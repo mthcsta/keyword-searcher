@@ -47,25 +47,25 @@ Todo o projeto tem variaveis e funções definidos em inglês para manter um pad
 
 ## Resultados
 Abaixo três tabelas com os resultados tirados das estatísticas geradas. A primeira tabela mostrando a indexação das duas árvores para cada base. A segunda e terceira mostrando para consulta de 10 e 1000 palavras respectivamente.
-
+Como podemos ver nas tabelas é nítido que para inserção, BST(ABP) é mais rápida em comparação com AVL, porém para consulta ambas 
 
 | indexação | **AVL** (100) | **BST** (100) | **AVL** (10k) | **BST** (10k) | **AVL** (900k) | **BST** (900k) |  
-|----|-----|----|----|----|----|----|
-| nodos | 704 | 704 | 15542 | 15542 | 174346 | 174346 |
-| comparações | 11196 | 11478 | 1391862 | 1398596 | 131249844 | 124073420 |
-| rotações | 500 | 0  | 11105 | 0 | 123929 | 0 | 
-| altura da árvore | 11 | 22 | 17 | 34 | 21 | 45 |
-| tempo decorrido | 1 ms | 0 ms | 52 ms | 38 ms | 4.661 ms | 3.629 ms |
+|-----------|---------------|---------------|---------------|---------------|----------------|----------------|
+| nodos     | 704           | 704           | 15542         | 15542         | 174346         | 174346         |
+| comparações | 11196       | 11478         | 1391862       | 1398596       | 131249844      | 124073420      |
+| rotações  | 500           | 0             | 11105         | 0             | 123929         | 0              | 
+| altura da árvore | 11     | 22            | 17            | 34            | 21             | 45             |
+| tempo decorrido  | 1 ms   | 0 ms          | 52 ms         | 38 ms         | 4.661 ms       | 3.629 ms       |
 
 | 10 consultas | **AVL** (100) | **BST** (100) | **AVL** (10k) | **BST** (10k) | **AVL** (900k) | **BST** (900k) |  
-|----|-----|----|----|----|----|----|
-| comparações | 82 | 98 | 87 | 97 | 91 | 97 |
-| tempo decorrido | 0 ms | 0 ms | 1 ms | 1 ms | 120 ms | 106 ms |
+|--------------|---------------|---------------|---------------|---------------|----------------|----------------|
+| comparações  | 82            | 98            | 87            | 97            | 91             | 97             |
+| tempo decorrido | 0 ms       | 0 ms          | 1 ms          | 1 ms          | 120 ms         | 106 ms         |
 
 | 1000 consultas | **AVL** (100) | **BST** (100) | **AVL** (10k) | **BST** (10k) | **AVL** (900k) | **BST** (900k) |  
-|----|-----|----|----|----|----|----|
-| comparações | 9745 | 11486 | 13242 | 16915 | 14705 | 16915 |
-| tempo decorrido | 3 ms | 0 ms | 3 ms | 5 ms | 261 ms | 254 ms |
+|----------------|---------------|---------------|---------------|---------------|----------------|----------------|
+| comparações    | 9745          | 11486         | 13242         | 16915         | 14705          | 16915          |
+| tempo decorrido | 3 ms         | 0 ms          | 3 ms          | 5 ms          | 261 ms         | 254 ms         |
 
 ## Referências
 * AVL e ABP(BST) tiradas dos slides passados em aula

@@ -49,5 +49,13 @@ CLS
 @echo O programa executou com sucesso. Seu arquivo foi gerado em: 
 @echo %OUTPUT%
 @echo --------------------------------------------------------------------------------
+@echo off
+set /P option="Deseja abrir o arquivo criado? [s/n] "
 
+if ["%option%"] EQU ["s"] goto cond_true
+if ["%option%"] EQU ["S"] goto cond_true
+goto cond_false
+:cond_true
+notepad.exe %OUTPUT%
+:cond_false
 pause
