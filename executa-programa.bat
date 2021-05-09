@@ -6,22 +6,22 @@ set QUERY="test/query/10.txt"
 set OUTPUT="test/output/10-CMP.txt"
 set TREE="CMP"
 
-@echo arquivos para entrada:
+@echo arquivos disponiveis para leitura:
 dir /b "test/input/"
 @echo. 
 
-set /P inputfilename="Arquivo de leitura: "
+set /P inputfilename="Digite o arquivo para leitura: "
 if [%inputfilename%] NEQ [] set INPUT="test/input/%inputfilename%"
 
 @echo. 
-@echo arquivos para consulta:
+@echo arquivos disponiveis para consulta:
 dir /b "test/query/"
 @echo. 
 
-set /P queryfilename="Arquivo de consulta: "
+set /P queryfilename="Digite o arquivo para consulta: "
 if [%queryfilename%] NEQ [] set QUERY="test/query/%queryfilename%"
 
-set /P outputfilename="Arquivo de saida: "
+set /P outputfilename="Digite o nome do arquivo para saida: "
 if [%outputfilename%] NEQ [] set OUTPUT="test/output/%outputfilename%"
 
 @echo.
@@ -31,7 +31,7 @@ if [%outputfilename%] NEQ [] set OUTPUT="test/output/%outputfilename%"
 @echo - CMP (estatisticas de ambas as arvores)
 @echo. 
 
-set /P treename="Arvore: "
+set /P treename="Digite a arvore para montar: "
 if [%treename%] NEQ [] set TREE="%treename%"
 
 
@@ -54,6 +54,8 @@ set /P option="Deseja abrir o arquivo criado? [s/n] "
 
 if ["%option%"] EQU ["s"] goto cond_true
 if ["%option%"] EQU ["S"] goto cond_true
+if ["%option%"] EQU ["sim"] goto cond_true
+if ["%option%"] EQU ["SIM"] goto cond_true
 goto cond_false
 :cond_true
 notepad.exe %OUTPUT%

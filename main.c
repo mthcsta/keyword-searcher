@@ -40,8 +40,7 @@ int main (int argc, char *argv[]) {
     stats_bst = indexandqueryBST(input, query, output);
 
     // coloca as estatisticas das duas ·rvores no arquivo de saÌda
-    fprintf(output, "______________________________________________________________\n\n");
-    fprintf(output, "\t\t ¡rvore AVL\n");
+    fprintf(output, "\n\n\t\t¡rvore AVL\n");
     putstats(output, &stats_avl);
     fprintf(output, "\n\n\t\t¡rvore ABP\n");
     putstats(output, &stats_bst);
