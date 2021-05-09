@@ -7,11 +7,11 @@ MENTION_T* mention_init() {
 
 // insere nova menção no inicio da lista de menções
 void mention_insert(MENTION_T **mention_list, int current_id) {
-    MENTION_T *new_mention;
-    new_mention = (MENTION_T*) malloc(sizeof(MENTION_T));
-    new_mention->id = current_id;
-    new_mention->next = *mention_list;
-    *mention_list = new_mention;
+  MENTION_T *new_mention;
+  new_mention = (MENTION_T*) malloc(sizeof(MENTION_T));
+  new_mention->id = current_id;
+  new_mention->next = *mention_list;
+  *mention_list = new_mention;
 }
 
 // retorna a lista de menções passadas em forma inversa

@@ -94,7 +94,7 @@ void avl_insert(AVL_T **tree, char word[], WORD_T **Word, STATISTICS_T *stats) {
   int changed = 0;
   avl_insertTR(tree, word, &changed, Word, stats);
 }
-
+// recursão chamada por avl_insert
 void avl_insertTR(AVL_T **tree, char word[], int *changed, WORD_T **Word, STATISTICS_T *stats) {
   int cmp;
   AVL_T *node = *tree;
