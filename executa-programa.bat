@@ -3,8 +3,12 @@
 set PROGRAM="bin/Debug/Buscador de Palavras Chave.exe"
 set INPUT="test/input/100.txt"
 set QUERY="test/query/10.txt"
-set OUTPUT="test/output/10-CMP.txt"
+set tempo=%time: =%
+set default=%date:/=-%-%tempo::=-%
+set OUTPUT="test/output/%default:,=%.txt"
 set TREE="CMP"
+
+@echo %OUTPUT%
 
 @echo arquivos disponiveis para leitura:
 dir /b "test/input/"
@@ -22,7 +26,7 @@ set /P queryfilename="Digite o arquivo para consulta: "
 if [%queryfilename%] NEQ [] set QUERY="test/query/%queryfilename%"
 
 set /P outputfilename="Digite o nome do arquivo para saida: "
-if [%outputfilename%] NEQ [] set OUTPUT="test/output/%outputfilename%"
+if [%outputfilename%] NEQ [] set OUTPUT="test/output/%outputfilename%" 
 
 @echo.
 @echo Arvores Disponiveis:
