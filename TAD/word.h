@@ -9,7 +9,12 @@ typedef struct WORD {
 } WORD_T;
 
 WORD_T* word_init();
+// acessando os membros da estrutura
+MENTION_T* word_mentions(WORD_T *Word);
+const char* word_content(WORD_T *Word);
+// instancia uma WORD para palavra passada
 void word_insert(WORD_T **Word, char word[]);
-void word_add_mention(WORD_T **word, int id);
+// adiciona uma menção a uma Word
+void word_add_mention(WORD_T **Word, int id);
 
 #endif

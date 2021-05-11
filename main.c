@@ -5,6 +5,7 @@
 
 /*
   padrão para chamada deste programa: programa.exe <arquivo de entrada> <arquivo de consulta> <arquivo de saida> <arvore OU "cmp">
+  Podendo <arvore> ser: AVL ou BST/ABP
 */
 int main (int argc, char *argv[]) {
   setlocale(LC_ALL, "Portuguese");
@@ -31,11 +32,15 @@ int main (int argc, char *argv[]) {
     stats_bst = indexandqueryBST(input, query, output);
     putstats(output, &stats_bst);
   } else if (strcmp(argv[4], "cmp") == 0) { // caso foi escolhido uma comparação
+    printf("\nrodando AVL...");
     stats_avl = indexandqueryAVL(input, query, output); // indexa e consulta na arvore AVL retornando as estatisticas
+
     // volta para o inicio de cada arquivo usado
     fseek(input, 0, SEEK_SET);
     fseek(query, 0, SEEK_SET);
     fseek(output, 0, SEEK_SET);
+
+    printf("\rrodando ABP...");
     // usa os arquivos novamente, agora para pegar as estatisticas da ABP
     stats_bst = indexandqueryBST(input, query, output);
 
@@ -45,7 +50,7 @@ int main (int argc, char *argv[]) {
     fprintf(output, "\n\n\t\tÁrvore ABP\n");
     putstats(output, &stats_bst);
   } else {
-    printf("Erro! arvore não encontrada.\nAs arvores disponiveis são: AVL e ABP");
+    printf("Erro! árvore não encontrada.\nAs árvores disponíveis são: AVL e ABP");
   }
 
   fclose(input);

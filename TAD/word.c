@@ -6,6 +6,12 @@
 WORD_T* word_init() {
   return NULL;
 }
+MENTION_T* word_mentions(WORD_T *Word) {
+  return Word->mentions;
+}
+const char* word_content(WORD_T *Word) {
+  return Word->content;
+}
 void word_insert(WORD_T **Word, char word[]) {
   WORD_T *new_word;
 
@@ -15,7 +21,7 @@ void word_insert(WORD_T **Word, char word[]) {
   *Word = new_word;
 }
 void word_add_mention(WORD_T **Word, int id) {
-  if ((*Word)->mentions == NULL || (*Word)->mentions->id != id) {
+  if ((*Word)->mentions == NULL || mention_id((*Word)->mentions) != id) {
     mention_insert(&(*Word)->mentions, id);
   }
 }

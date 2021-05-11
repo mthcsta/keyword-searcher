@@ -1,0 +1,33 @@
+consulta: bateria Palavra encontrada nos tweets 1, 2, 10,
+consulta: você Palavra encontrada nos tweets 3, 7,
+consulta: dado Palavra não encontrada
+consulta: amei Palavra encontrada nos tweets 4, 5,
+consulta: receptor Palavra não encontrada
+
+
+		Árvore AVL
+
+********** Estatísticas da Indexação **************
+nodos = 84
+comparações = 596
+rotações = 51
+altura da árvore = 8
+tempo decorrido = 0 ms
+
+********** Estatísticas das Consultas **************
+comparações = 29
+tempo decorrido = 1 ms
+
+
+		Árvore ABP
+
+********** Estatísticas da Indexação **************
+nodos = 84
+comparações = 575
+rotações = 0
+altura da árvore = 12
+tempo decorrido = 0 ms
+
+********** Estatísticas das Consultas **************
+comparações = 33
+tempo decorrido = 0 ms

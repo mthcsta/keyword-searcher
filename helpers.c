@@ -6,6 +6,8 @@
 #include <time.h>
 #include "TAD/avl.h"
 #include "TAD/bst.h"
+#include "TAD/word.h"
+#include "TAD/mention.h"
 
 // coloca caracteres em minusculo
 void wordtolowercase(char *s) {
@@ -35,7 +37,7 @@ int loadfile(FILE **file, char *filename, char *mode) {
 }
 // vai para a proxima palavra do token
 int nextword(char **word, char *text) {
-  char sepparator[] = {" 0123456789,.&*%\?!;/-'@\"$#=~><()][}{:\n\t_"};
+  char sepparator[] = {" 0123456789,.&*%\?!;/-+'@\"$#=~><()][}{:\n\t_^`|\\"};
   *word = strtok(text, sepparator);
   if ((*word) != NULL) {
     wordtolowercase(*word);
@@ -64,6 +66,20 @@ int wordtoquery(char line[], int size, FILE *query, char **word) {
   return 1;
 }
 
+// coloca palavra consultada em OUTPUT junto dos ids onde a palavra foi mencionada
+void wordtooutput(FILE *output, WORD_T **Word, char *word) {
+  MENTION_T *Mentions;
+  if (!(*Word)) { // caso o ponteiro seja nulo, então não foi encontrada a palavra.
+    fprintf(output, "consulta: %s Palavra não encontrada", word);
+    return;
+  }
+  fprintf(output,"consulta: %s Palavra encontrada nos tweets", word);
+  for (Mentions = mention_invert(word_mentions(*Word)); Mentions; Mentions = mention_next(Mentions)) {
+    fprintf(output, " %d,", mention_id(Mentions));
+  }
+  return;
+}
+
 // recebe 3 arquivos, um para leitura de tweets, um para consultar palavras e outro para saída das palavras
 // consultadas e em quais tweets elas foram encontradas.
 // retorna uma struct com as estatisticas da indexação e consulta
@@ -72,7 +88,6 @@ STATISTICS_T indexandqueryAVL(FILE *input, FILE *query, FILE *output) {
   char *word, line[LINE_SIZE]; // linha a serem lidas do arquivo e palavra para token
   AVL_T *tree = avl_init(); // guarda ponteiro para arvore
   WORD_T *Word; // guarda ponteiro para palavra na arvore
-  MENTION_T *Mentions; // guarda ponteiro para menções da palavra na arvore
   STATISTICS_T stats = {0, 0, 0, 0, 0, 0}; // inicia estatisticas com os valores em 0
   clock_t clock_start = 0, clock_elapsed = 0; // usados para o tempo decorrido nas estatisticas
 
@@ -90,14 +105,8 @@ STATISTICS_T indexandqueryAVL(FILE *input, FILE *query, FILE *output) {
   // CONSULTA
   clock_start = clock();
   while (wordtoquery(line, LINE_SIZE, query, &word)) {
-    if ((Word = avl_search(tree, word, &stats.comparations_query))) {
-      fprintf(output,"consulta: %s Palavra encontrada nos tweets", word);
-      for (Mentions = mention_invert(Word->mentions); Mentions; Mentions = Mentions->next) {
-        fprintf(output, " %d,", Mentions->id);
-      }
-    } else {
-      fprintf(output, "consulta: %s Palavra não encontrada", word);
-    }
+    Word = avl_search(tree, word, &stats.comparations_query);
+    wordtooutput(output, &Word, word);
     fprintf(output, "\n");
   }
   clock_elapsed = clock_diff(clock_start); // acumula tempo decorrido
@@ -106,7 +115,6 @@ STATISTICS_T indexandqueryAVL(FILE *input, FILE *query, FILE *output) {
 
   return stats;
 }
-
 // recebe 3 arquivos, um para leitura de tweets, um para consultar palavras e outro para saída das palavras
 // consultadas e em quais tweets elas foram encontradas.
 // retorna uma struct com as estatisticas da indexação e consulta
@@ -116,7 +124,6 @@ STATISTICS_T indexandqueryBST(FILE *input, FILE *query, FILE *output) {
   char *word, line[LINE_SIZE]; // linha a serem lidas do arquivo e palavra para token
   BST_T *tree = bst_init(); // guarda ponteiro para arvore
   WORD_T *Word; // guarda ponteiro para palavra na arvore
-  MENTION_T *Mentions; // guarda ponteiro para menções da palavra na arvore
   STATISTICS_T stats = {0, 0, 0, 0, 0, 0}; // inicia estatisticas com os valores em 0
   clock_t clock_start = 0, clock_elapsed = 0; // usados para o tempo decorrido nas estatisticas
 
@@ -134,14 +141,8 @@ STATISTICS_T indexandqueryBST(FILE *input, FILE *query, FILE *output) {
   // CONSULTA
   clock_start = clock();
   while (wordtoquery(line, LINE_SIZE, query, &word)) {
-    if ((Word = bst_get(tree, word, &stats.comparations_query))) {
-      fprintf(output,"consulta: %s Palavra encontrada nos tweets", word);
-      for (Mentions = mention_invert(Word->mentions); Mentions; Mentions = Mentions->next) {
-        fprintf(output, " %d,", Mentions->id);
-      }
-    } else {
-      fprintf(output, "consulta: %s Palavra não encontrada", word);
-    }
+    Word = bst_get(tree, word, &stats.comparations_query);
+    wordtooutput(output, &Word, word);
     fprintf(output, "\n");
   }
   clock_elapsed = clock_diff(clock_start); // acumula tempo decorrido
@@ -152,14 +153,14 @@ STATISTICS_T indexandqueryBST(FILE *input, FILE *query, FILE *output) {
 }
 // coloca em um arquivo de escrita as estatisticas geradas por funções indexandquery
 void putstats(FILE *output, STATISTICS_T *stats) {
-  fprintf(output, "\n********** Estatísticas da Indexação **************\n");
+  fprintf(output, "\n********** Estatísticas da Indexação **********\n");
   fprintf(output, "nodos = %d\n", stats->nodes);
   fprintf(output, "comparações = %lu\n", stats->comparations_index);
   fprintf(output, "rotações = %d\n", stats->rotations);
   fprintf(output, "altura da árvore = %d\n", stats->height);
   fprintf(output, "tempo decorrido = %ld ms\n", stats->elapsed_index);
 
-  fprintf(output, "\n********** Estatísticas das Consultas **************\n");
+  fprintf(output, "\n********** Estatísticas das Consultas **********\n");
   fprintf(output, "comparações = %lu\n", stats->comparations_query);
   fprintf(output, "tempo decorrido = %ld ms\n", stats->elapsed_query);
 }

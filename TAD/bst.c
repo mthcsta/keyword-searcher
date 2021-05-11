@@ -13,7 +13,7 @@ BST_T** bst_search(BST_T **tree, char word[], long unsigned int *stats_comparati
   int cmp;
   while (*tree) {
     (*stats_comparations)++;
-    cmp = strcmp(word, (*tree)->data->content);
+    cmp = strcmp(word, word_content((*tree)->data));
     if (cmp == 0) {
       return tree;
     }
@@ -27,7 +27,7 @@ BST_T** bst_search(BST_T **tree, char word[], long unsigned int *stats_comparati
 }
 
 WORD_T* bst_get(BST_T *tree, char word[], long unsigned int *stats_comparations_query) {
-  if ((tree = *(bst_search(&tree, word, stats_comparations_query))) != NULL ) {
+  if ((tree = *bst_search(&tree, word, stats_comparations_query)) != NULL ) {
     return tree->data;
   }
   return NULL;
