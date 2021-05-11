@@ -8,8 +8,8 @@ set default=%date:/=-%-%tempo::=-%
 set OUTPUT="test/output/%default:,=%.txt"
 set TREE="CMP"
 
-@echo %OUTPUT%
-
+CLS 
+@echo --------------------------------------------------------------------------------
 @echo arquivos disponiveis para leitura:
 dir /b "test/input/"
 @echo. 
@@ -17,7 +17,9 @@ dir /b "test/input/"
 set /P inputfilename="Digite o arquivo para leitura: "
 if [%inputfilename%] NEQ [] set INPUT="test/input/%inputfilename%"
 
-@echo. 
+CLS
+@echo arquivo para leitura: %INPUT%
+@echo --------------------------------------------------------------------------------
 @echo arquivos disponiveis para consulta:
 dir /b "test/query/"
 @echo. 
@@ -25,10 +27,18 @@ dir /b "test/query/"
 set /P queryfilename="Digite o arquivo para consulta: "
 if [%queryfilename%] NEQ [] set QUERY="test/query/%queryfilename%"
 
+CLS
+@echo arquivo para leitura: %INPUT%
+@echo arquivo para consulta: %QUERY%
+@echo --------------------------------------------------------------------------------
 set /P outputfilename="Digite o nome do arquivo para saida: "
 if [%outputfilename%] NEQ [] set OUTPUT="test/output/%outputfilename%" 
 
-@echo.
+CLS
+@echo arquivo para leitura: %INPUT%
+@echo arquivo para consulta: %QUERY%
+@echo arquivo para saida: %OUTPUT%
+@echo --------------------------------------------------------------------------------
 @echo Arvores Disponiveis:
 @echo - AVL
 @echo - BST ou ABP
