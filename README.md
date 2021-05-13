@@ -68,6 +68,11 @@ BST é mais rápida que AVL em inserção por não precisar fazer rotações, ap
 |-----------------|---------------|---------------|---------------|---------------|----------------|----------------|
 | comparações     | 9.745         | 11.486        | 13.242        | 16.915        | 14.705         | 16.915         |
 | tempo decorrido | 3 ms          | 0 ms          | 3 ms          | 5 ms          | 261 ms         | 254 ms         |
+    
+* Um novo teste foi feito, desta vez com 16k de nodos e 1k de consultas executado 100 mil vezes o  
+arquivo de consulta mostrou os seguintes resultados:  
+Para AVL tempo decorrido = 66,058 s  
+Para BST tempo decorrido = 72,580 s  
 
 ## Referências
 * AVL e ABP(BST) tiradas dos slides passados em aula
