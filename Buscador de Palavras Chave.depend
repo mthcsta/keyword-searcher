@@ -5,19 +5,19 @@
 	<string.h>
 	<locale.h>
 
-1620708127 source:c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\main.c
+1620864860 source:c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\main.c
 	<stdio.h>
 	<stdlib.h>
 	<locale.h>
 	"helpers.h"
 
-1620709011 c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tad\avl.h
+1620859238 c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tad\avl.h
 	<stdio.h>
 	<string.h>
 	"word.h"
 	"../helpers.h"
 
-1620710153 source:c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tad\avl.c
+1620859286 source:c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tad\avl.c
 	<stdio.h>
 	<stdlib.h>
 	"avl.h"
@@ -35,7 +35,7 @@
 1620703778 c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tad\word.h
 	"mention.h"
 
-1620701982 source:c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\helpers.c
+1620864868 source:c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\helpers.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -47,7 +47,7 @@
 	"TAD/word.h"
 	"TAD/mention.h"
 
-1620704494 c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\helpers.h
+1620862296 c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\helpers.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -79,16 +79,16 @@
 	<stdlib.h>
 	"rb.h"
 
-1620704890 c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tad\bst.h
+1620857254 c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tad\bst.h
 	<stdio.h>
 	<string.h>
 	"word.h"
 	"../helpers.h"
 
-1620702126 source:c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tad\bst.c
+1620857241 source:c:\users\matheus\desktop\trabalho-final-estrutura-de-dados\buscador de palavras chave\tad\bst.c
 	<stdio.h>
 	<string.h>
-	"word.h"
-	"../helpers.h"
 	"bst.h"
+	"../helpers.h"
+	"word.h"
 

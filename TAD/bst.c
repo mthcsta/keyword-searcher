@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <string.h>
-#include "word.h"
-#include "../helpers.h"
 #include "bst.h"
+#include "../helpers.h"
+#include "word.h"
 
 BST_T* bst_init() {
   return NULL;
@@ -13,7 +13,8 @@ BST_T** bst_search(BST_T **tree, char word[], long unsigned int *stats_comparati
   int cmp;
   while (*tree) {
     (*stats_comparations)++;
-    cmp = strcmp(word, word_content((*tree)->data));
+
+    cmp = strcmp(word, word_content((*tree)->data)); // compara palavra com contida no nodo atual
     if (cmp == 0) {
       return tree;
     }
@@ -27,7 +28,7 @@ BST_T** bst_search(BST_T **tree, char word[], long unsigned int *stats_comparati
 }
 
 WORD_T* bst_get(BST_T *tree, char word[], long unsigned int *stats_comparations_query) {
-  if ((tree = *bst_search(&tree, word, stats_comparations_query)) != NULL ) {
+  if ((tree = *bst_search(&tree, word, stats_comparations_query)) != NULL) {
     return tree->data;
   }
   return NULL;

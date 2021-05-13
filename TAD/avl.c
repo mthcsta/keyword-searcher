@@ -38,7 +38,7 @@ WORD_T* avl_search(AVL_T *tree, char word[], unsigned long int *stats_comparatio
 }
 void avl_insert(AVL_T **tree, char word[], WORD_T **Word, STATISTICS_T *stats) {
   int changed = 0;
-  avl_insertTR(tree, word, &changed, Word, stats);
+  avl_insertTR(tree, word, &changed, Word, stats); // chama auxiliar para inserção em AVL
 }
 // recursão chamada por avl_insert
 void avl_insertTR(AVL_T **tree, char word[], int *changed, WORD_T **Word, STATISTICS_T *stats) {

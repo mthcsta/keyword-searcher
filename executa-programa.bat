@@ -1,3 +1,4 @@
+:start
 @echo off
 
 set PROGRAM="bin/Debug/Buscador de Palavras Chave.exe"
@@ -7,6 +8,9 @@ set tempo=%time: =%
 set default=%date:/=-%-%tempo::=-%
 set OUTPUT="test/output/%default:,=%.txt"
 set TREE="CMP"
+set TIMES=1
+
+
 
 CLS 
 @echo --------------------------------------------------------------------------------
@@ -48,9 +52,13 @@ CLS
 set /P treename="Digite a arvore para montar: "
 if [%treename%] NEQ [] set TREE="%treename%"
 
+@echo.
+set /P timesinput="Digite quantas vezes a consulta deve repetir: "
+if [%timesinput%] NEQ [] set TIMES="%timesinput%"
+
 
 @echo on
-%PROGRAM% %INPUT% %QUERY% %OUTPUT% %TREE%
+%PROGRAM% %INPUT% %QUERY% %OUTPUT% %TREE% %TIMES%
 
 CLS
 
@@ -63,15 +71,32 @@ CLS
 @echo O programa executou com sucesso. Seu arquivo foi gerado em: 
 @echo %OUTPUT%
 @echo --------------------------------------------------------------------------------
+
+
 @echo off
 set /P option="Deseja abrir o arquivo criado? [s/n] "
-
-if ["%option%"] EQU ["s"] goto cond_true
-if ["%option%"] EQU ["S"] goto cond_true
-if ["%option%"] EQU ["sim"] goto cond_true
-if ["%option%"] EQU ["SIM"] goto cond_true
-goto cond_false
-:cond_true
+call :option_passed %option% cond_false
 notepad.exe %OUTPUT%
 :cond_false
+
+set /P option="Deseja testar novamente? [s/n] "
+call :option_passed %option% cond_false_2
+goto start
+
+:cond_false_2
+exit
+
+
+
+REM função que recebe uma string OPÇÃO e um rotulo, 
+REM caso a OPÇÃO seja SIM então termina, se não pula para o rotulo passado
+:option_passed
+	if ["%~1"] EQU ["s"] goto option_passed_end
+	if ["%~1"] EQU ["S"] goto option_passed_end
+	if ["%~1"] EQU ["sim"] goto option_passed_end
+	if ["%~1"] EQU ["SIM"] goto option_passed_end
+	goto %~2
+	:option_passed_end
+exit /B 0
+
 pause

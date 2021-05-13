@@ -38,8 +38,8 @@ int loadfile(FILE **file, char *filename, char *mode) {
 // vai para a proxima palavra do token
 int nextword(char **word, char *text) {
   char sepparator[] = {" 0123456789,.&*%\?!;/-+'@\"$#=~><()][}{:\n\t_^`|\\"};
-  *word = strtok(text, sepparator);
-  if ((*word) != NULL) {
+  *word = strtok(text, sepparator); // aponta para a proxima palavra do token
+  if ((*word) != NULL) { // caso a palavra não seja NULL, então poe em minusculo.
     wordtolowercase(*word);
     return 1;
   }
@@ -48,7 +48,7 @@ int nextword(char **word, char *text) {
 // guarda no vetor line uma linha do arquivo de entrada de tweets
 int lineofwords(char line[], int size, FILE *input, int *id_number) {
   char *id;
-  if (!fgets(line, size, input)) {
+  if (!fgets(line, size, input)) { // se fgets falhar então termina a função informando que deve terminar o laço.
     return 0;
   }
   id = strtok(line, ";");
@@ -81,15 +81,16 @@ void wordtooutput(FILE *output, WORD_T **Word, char *word) {
 }
 
 // recebe 3 arquivos, um para leitura de tweets, um para consultar palavras e outro para saída das palavras
+// recebe por fim uma variavel times que diz quantas vezes o programa repetirá o arquivo de consulta
 // consultadas e em quais tweets elas foram encontradas.
 // retorna uma struct com as estatisticas da indexação e consulta
-STATISTICS_T indexandqueryAVL(FILE *input, FILE *query, FILE *output) {
-  int id_number; // id do tweet
+STATISTICS_T indexandqueryAVL(FILE *input, FILE *query, FILE *output, int times) {
+  int id_number, times_dec; // id do tweet e vezes que consultará
   char *word, line[LINE_SIZE]; // linha a serem lidas do arquivo e palavra para token
   AVL_T *tree = avl_init(); // guarda ponteiro para arvore
   WORD_T *Word; // guarda ponteiro para palavra na arvore
   STATISTICS_T stats = {0, 0, 0, 0, 0, 0}; // inicia estatisticas com os valores em 0
-  clock_t clock_start = 0, clock_elapsed = 0; // usados para o tempo decorrido nas estatisticas
+  clock_t clock_start = 0; // usados para o tempo decorrido nas estatisticas
 
   // INDEXAÇÃO
   clock_start = clock();
@@ -99,33 +100,46 @@ STATISTICS_T indexandqueryAVL(FILE *input, FILE *query, FILE *output) {
       word_add_mention(&Word, id_number);
     }
   }
-  clock_elapsed = clock_diff(clock_start); // acumula tempo decorrido
-  stats.elapsed_index = clock_elapsed; // grava tempo decorrido para indexação
+  stats.elapsed_index = clock_diff(clock_start); // grava tempo decorrido para indexação
+  stats.height = avl_height(tree);
 
-  // CONSULTA
+  // repete o arquivo CONSULTA x vezes, onde x é a variavel times
+  times_dec = times;
   clock_start = clock();
+  do {
+    fseek(query, 0, SEEK_SET);
+    while (wordtoquery(line, LINE_SIZE, query, &word)) {
+      Word = avl_search(tree, word, &stats.comparations_query);
+    }
+    times_dec--;
+  } while (times_dec > 0);
+  // guarda valores referentes ao clock
+  stats.elapsed_query = clock_diff(clock_start);
+  stats.elapsed_query_average = stats.elapsed_query / times; // grava tempo decorrido para consulta
+
+  // repete CONSULTA porem agora inserindo no arquivo de saída.
+  fseek(query, 0, SEEK_SET); // coloca ponteiro para o arquivo no começo
+  stats.comparations_query = 0;
   while (wordtoquery(line, LINE_SIZE, query, &word)) {
     Word = avl_search(tree, word, &stats.comparations_query);
     wordtooutput(output, &Word, word);
     fprintf(output, "\n");
   }
-  clock_elapsed = clock_diff(clock_start); // acumula tempo decorrido
-  stats.height = avl_height(tree);
-  stats.elapsed_query = clock_elapsed; // grava tempo decorrido para consulta
-
   return stats;
 }
+
 // recebe 3 arquivos, um para leitura de tweets, um para consultar palavras e outro para saída das palavras
+// recebe por fim uma variavel times que diz quantas vezes o programa repetirá o arquivo de consulta
 // consultadas e em quais tweets elas foram encontradas.
 // retorna uma struct com as estatisticas da indexação e consulta
-STATISTICS_T indexandqueryBST(FILE *input, FILE *query, FILE *output) {
+STATISTICS_T indexandqueryBST(FILE *input, FILE *query, FILE *output, int times) {
   setlocale(LC_ALL, "Portuguese");
-  int id_number; // id do tweet
+  int id_number, times_dec; // id do tweet
   char *word, line[LINE_SIZE]; // linha a serem lidas do arquivo e palavra para token
   BST_T *tree = bst_init(); // guarda ponteiro para arvore
   WORD_T *Word; // guarda ponteiro para palavra na arvore
   STATISTICS_T stats = {0, 0, 0, 0, 0, 0}; // inicia estatisticas com os valores em 0
-  clock_t clock_start = 0, clock_elapsed = 0; // usados para o tempo decorrido nas estatisticas
+  clock_t clock_start = 0; // usados para o tempo decorrido nas estatisticas
 
   // INDEXAÇÃO
   clock_start = clock();
@@ -135,19 +149,31 @@ STATISTICS_T indexandqueryBST(FILE *input, FILE *query, FILE *output) {
       word_add_mention(&Word, id_number);
     }
   }
-  clock_elapsed = clock_diff(clock_start); // acumula tempo decorrido
-  stats.elapsed_index = clock_elapsed; // grava tempo decorrido para indexação
+  stats.elapsed_index = clock_diff(clock_start); // grava tempo decorrido para indexação
+  stats.height = bst_height(tree);
 
-  // CONSULTA
+  // repete o arquivo CONSULTA x vezes, onde x é a variavel times
+  times_dec = times;
   clock_start = clock();
+  do {
+    fseek(query, 0, SEEK_SET);
+    while (wordtoquery(line, LINE_SIZE, query, &word)) {
+      Word = bst_get(tree, word, &stats.comparations_query);
+    }
+    times_dec--;
+  } while(times_dec > 0);
+  // guarda valores referentes ao clock
+  stats.elapsed_query = clock_diff(clock_start);
+  stats.elapsed_query_average = stats.elapsed_query / times; // grava tempo decorrido para consulta
+
+  // repete CONSULTA porem agora inserindo no arquivo de saída.
+  fseek(query, 0, SEEK_SET);
+  stats.comparations_query = 0; // zera comparações...
   while (wordtoquery(line, LINE_SIZE, query, &word)) {
     Word = bst_get(tree, word, &stats.comparations_query);
     wordtooutput(output, &Word, word);
     fprintf(output, "\n");
   }
-  clock_elapsed = clock_diff(clock_start); // acumula tempo decorrido
-  stats.height = bst_height(tree);
-  stats.elapsed_query = clock_elapsed; // grava tempo decorrido para consulta
 
   return stats;
 }
@@ -158,13 +184,21 @@ void putstats(FILE *output, STATISTICS_T *stats) {
   fprintf(output, "comparações = %lu\n", stats->comparations_index);
   fprintf(output, "rotações = %d\n", stats->rotations);
   fprintf(output, "altura da árvore = %d\n", stats->height);
-  fprintf(output, "tempo decorrido = %ld ms\n", stats->elapsed_index);
+  fprintf(output, "tempo decorrido = %.3f s\n", stats->elapsed_index);
 
   fprintf(output, "\n********** Estatísticas das Consultas **********\n");
   fprintf(output, "comparações = %lu\n", stats->comparations_query);
-  fprintf(output, "tempo decorrido = %ld ms\n", stats->elapsed_query);
+  fprintf(output, "tempo decorrido = %.3f s\n", stats->elapsed_query);
+  if (stats->elapsed_query != stats->elapsed_query_average) {
+    fprintf(output, "tempo decorrido (média) = %.3f s\n", stats->elapsed_query_average);
+  }
 }
+void putstattimes(FILE *output, int times) {
+  fprintf(output, "\n*A média para o tempo decorrido foi tirada de uma repetição de %dx o arquivo de consulta.", times);
+}
+
 // calcula a diferença entre o clock atual e um clock salvo antes
-clock_t clock_diff(clock_t clock_start) {
-  return ((clock() - clock_start) * 1000) / CLOCKS_PER_SEC;
+double clock_diff(clock_t clock_start) {
+  return (double)(clock() - clock_start) / MILLISEC;
 }
+

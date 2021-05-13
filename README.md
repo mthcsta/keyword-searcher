@@ -47,8 +47,9 @@ Todo o projeto tem variaveis e funções definidos em inglês para manter um pad
 
 ## Resultados
 Abaixo três tabelas com os resultados tirados das estatísticas geradas. A primeira tabela mostrando a indexação das duas árvores para cada base. A segunda e terceira mostrando para consulta de 10 e 1000 palavras respectivamente.
-Como podemos ver nas tabelas é nítido que BST(ABP) é mais rápida tanto para inserção quanto para consulta, só perdendo para AVL em 1 dos cenários em relação ao tempo decorrido. *Dentro do tempo decorrido para cada árvore está incluso o tempo também para leitura e o tempo para escrita nos arquivos.
-Em relação a comparações e altura, a árvore AVL é menor, sendo melhor que BST(ABP) nestes pontos.
+Embora nas tabelas o tempo decorrido para consulta seja menor em BST, AVL é mais rápida por fazer menos comparações para chegar no resultado. 
+BST é mais rápida que AVL em inserção por não precisar fazer rotações, apenas comparar até chegar a um lugar vazio.
+*Dentro do tempo decorrido para cada árvore está incluso o tempo também para leitura e o tempo para escrita nos arquivos.
 
 | indexação        | **AVL** (100) | **BST** (100) | **AVL** (10k) | **BST** (10k) | **AVL** (900k) | **BST** (900k) |  
 |------------------|---------------|---------------|---------------|---------------|----------------|----------------|

@@ -9,11 +9,12 @@
 #include "TAD/word.h"
 // um tweet tem como limite de 280 caracteres + 20 espaços livres para id e separador
 #define LINE_SIZE 300
+#define MILLISEC 1000
 
 typedef struct STATISTICS {
   int nodes, rotations, height;
   unsigned long int comparations_index, comparations_query;
-  clock_t elapsed_index, elapsed_query;
+  double elapsed_index, elapsed_query, elapsed_query_average;
 } STATISTICS_T;
 
 // passa uma palavra para minuscula
@@ -31,12 +32,14 @@ int wordtoquery(char line[], int size, FILE *query, char **word);
 // coloca palavra consultada no arquivo de saída e percorre por suas menções caso exista.
 void wordtooutput(FILE *output, WORD_T **Word, char *word);
 // indexa e consulta em uma arvore AVL
-STATISTICS_T indexandqueryAVL(FILE *input, FILE *query, FILE *output);
+STATISTICS_T indexandqueryAVL(FILE *input, FILE *query, FILE *output, int times);
 // indexa e consulta em uma arvore BST(ABP)
-STATISTICS_T indexandqueryBST(FILE *input, FILE *query, FILE *output);
+STATISTICS_T indexandqueryBST(FILE *input, FILE *query, FILE *output, int times);
 // coloca estatisticas no arquivo de saída
 void putstats(FILE *output, STATISTICS_T *stats);
+// coloca quantas vezes executou o arquivo de consulta
+void putstattimes(FILE *output, int times);
 // calcula o tempo decorrido comparando o tempo atual com o dado pelo parâmetro
-clock_t clock_diff(clock_t clock_start);
+double clock_diff(clock_t clock_start);
 
 #endif // HELPERS_H
