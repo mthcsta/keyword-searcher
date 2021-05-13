@@ -6,12 +6,12 @@ Este projeto foi feito com objetivo de fazer uma comparação entre árvores bin
 clique no arquivo `executa-programa.bat`.    
 
 **Pela linha de comando**:  
-O programa recebe 4 entradas  
+O programa recebe 5 entradas  
 `<arquivo de entrada>`: recebe o caminho para um arquivo CSV.  
 `<arquivo de consulta>`: recebe o caminho para um arquivo de texto com palavras escritas linha a linha.  
 `<arquivo de saída>`: recebe um nome de arquivo para criar e escrever.  
 `<arvore ou comparação>`: recebe o nome de uma árvore(AVL/BST) ou CMP(para comparação entre as duas).   
-
+`<vezes testa consulta>`: recebe um inteiro usado para repetir o teste de consulta  
 ## Forma de comparação
 A comparação é dividida três etapas:
 
